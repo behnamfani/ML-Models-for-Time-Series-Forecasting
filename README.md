@@ -83,6 +83,11 @@ xgb.XGBRegressor(objective='reg:squarederror', learning_rate=0.05, max_depth=3)
 
 Result:
 
+|Model	|MAE_Train	|RMSE_Train	|MAE_Test	|RMSE_Test|
+|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|
+|Linear Regression |0.076048	|0.100125	|0.084995	|0.107578|
+|Random Forrest max_depth=5 |0.069703	|0.090522	|0.084989	|0.108715|
+|XGBoost lr=0.05 & max_depth=3 |	0.069496|	0.090210|	0.085071|	0.108815|
 
 
 For Prophet and NeuralProphet models, the dataframe must consist of two columns of y (target feature which is meantemp) and ds (date).
