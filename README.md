@@ -121,7 +121,7 @@ from statsmodels.tsa.statespace.sarimax import SARIMAX
   df = Train['meantemp']
   df.index = pd.DatetimeIndex(Train.index).to_period('D')
 ```
-model = SARIMAX(Train['meantemp'], order=(1, 1, 3), seasonal_order=(1, 1, 1, 365)).fit()
+**model = SARIMAX(Train['meantemp'], order=(1, 1, 3), seasonal_order=(1, 1, 1, 365)).fit()**
 
 ![](Figures/acf.png)
 
