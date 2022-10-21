@@ -18,7 +18,7 @@ Models:
 5. SARIMA
 
 Dataset:
-The dataset contains meantemp, humidity, wind_speed, meanpressure, and the dates. I use and predict the meantemp feature. For the first 3 models, I create 3 different datasets with different features based on [medium](https://medium.com/data-science-at-microsoft/introduction-to-feature-engineering-for-time-series-forecasting-620aa55fcab0)
+The dataset contains meantemp, humidity, wind_speed, meanpressure, and the dates. I use and predict the meantemp feature. For the first 3 models, I create 3 different dataframes with different features based on [medium](https://medium.com/data-science-at-microsoft/introduction-to-feature-engineering-for-time-series-forecasting-620aa55fcab0)
 
 The first method is to simply use different date attributes:
 ```python
@@ -51,7 +51,7 @@ The third method is to use a rolling window. The main goal of building and using
       Testset['rolling_mean'], Testset['rolling_max'], Testset['rolling_min'] = rolling_mean, rolling_max, rolling_min
 ```
 
-E.g. using dataset created by the lags and scaled between -1 and 1, 3 models of linearRegression, RandomForrest(Max_depth=5), and XGBoost(lr=0.05, Max_depth=3) are trained and used to predict. 
+E.g. using dataset created by the lags and scaled between -1 and 1, 3 models of linearRegression, RandomForrest, and XGBoost are trained and used to predict. 
 |meantemp|	lag_1|	lag_2|	lag_3|	lag_4|	lag_5|
 |:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|
 |	7.000000|	6.000000|	8.666667|	7.166667|	7.400000|	10.000000|
@@ -62,15 +62,47 @@ E.g. using dataset created by the lags and scaled between -1 and 1, 3 models of 
 
 ![](Figures/corr.png)
 
-linearRegression
+```python
+from sklearn.linear_model import LinearRegression
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.preprocessing import MinMaxScaler
+import xgboost as xgb
+```
+
+LinearRegression()
 
 ![](Figures/lr.png)
 
-RandomForrest
+RandomForestRegressor(max_depth=5)
 
 ![](Figures/rf.png)
 
-XGBoost
+xgb.XGBRegressor(objective='reg:squarederror', learning_rate=0.05, max_depth=3)
 
 ![](Figures/xgb.png)
 
+Result:
+
+
+
+For Prophet and NeuralProphet models, the dataframe must consist of two columns of y (target feature which is meantemp) and ds (date).
+```python
+from prophet import Prophet
+from neuralprophet import NeuralProphet
+```
+```python
+  df = Train[["meantemp"]] 
+  df.rename(columns={"meantemp": "y"}, inplace=True)
+  df['ds'] = pd.to_datetime(Train.index)
+```  
+Prophet(weekly_seasonality=False, daily_seasonality=False)
+
+![](Figures/pr.png)
+
+Prophet: MAE_Train: 1.58942956629 - RMSE_Train 2.019178940866984 - MAE_Test 2.229713724510572 - RMSE_Test 2.7251281785326342
+
+NeuralProphet(n_lags=lags, learning_rate=0.01, num_hidden_layers=1, seasonality_reg=0.2, weekly_seasonality=False, daily_seasonality=False)
+
+![](Figures/npr.png)
+
+NeuralProphet: MAE_Train: 1.1258757235502816 - RMSE_Train 1.502469718180313 - MAE_Test 1.4588360756955796 - RMSE_Test 1.8114394949674366
