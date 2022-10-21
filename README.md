@@ -14,7 +14,7 @@ Plotting the meantemp:
 1. Linear Regression
 2. Random Forest
 3. XGBoost
-4. [Prophet](https://facebook.github.io/prophet/) and [NeuralProphet](https://github.com/ourownstory/neural_prophet)
+4. Prophet and NeuralProphet
 5. SARIMA
 
 ### Dataset:
@@ -113,5 +113,17 @@ Prophet: MAE_Train: 1.58942956629 - RMSE_Train 2.019178940866984 - MAE_Test 2.22
 NeuralProphet: MAE_Train: 1.1258757235502816 - RMSE_Train 1.502469718180313 - MAE_Test 1.4588360756955796 - RMSE_Test 1.8114394949674366
 
 
-The Autoregressive integrated Moving Average (ARMA(p, d, q)), model combines Autoregression (AR(p)) and Moving average (MA(q)) models with automatic differencing (d). Seasonality is important for forecasting if our data has one. Thus, seasonal autoregressive integrated moving-average (SARIMA(p, d, q)(P, D, Q)m) adds seasonal effects into the ARIMA model.  (P, D, Q) represent the seasonal orders and m is simply the number of observations per year. In this case that the we have daily data, m=365. The ACF and PACF plots will help to have an estimate of these values. A helpful link for this purpose is https://arauto.readthedocs.io/en/latest/how_to_choose_terms.html.
+The Autoregressive Integrated Moving Average (ARMA(p, d, q)), model combines Autoregression (AR(p)) and Moving average (MA(q)) models with automatic differencing (d). Since meantemp is not stationary and by using one order of differencing, it becomes stationary, we can set d=1. Seasonality is important for forecasting if our data has one. Thus, seasonal autoregressive integrated moving-average (SARIMA(p, d, q)(P, D, Q)m) adds seasonal effects into the ARIMA model.  (P, D, Q) represent the seasonal orders and m is simply the number of observations per year. In this case, we have daily data, m=365. The ACF and PACF plots will help to have an estimate of these values. A helpful link for this purpose is https://arauto.readthedocs.io/en/latest/how_to_choose_terms.html. 
+'''python
+from statsmodels.tsa.statespace.sarimax import SARIMAX
+'''
+'''python
+  df = Train['meantemp']
+  df.index = pd.DatetimeIndex(Train.index).to_period('D')
+'''
+model = SARIMAX(Train['meantemp'], order=(1, 1, 3), seasonal_order=(1, 1, 1, 365)).fit()
+
+![](Figures/npr.png)
+
+A drawback of using SARIMA here is as m=365, the runtime becomes very long!
 
