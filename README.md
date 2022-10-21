@@ -123,7 +123,7 @@ from statsmodels.tsa.statespace.sarimax import SARIMAX
 '''
 model = SARIMAX(Train['meantemp'], order=(1, 1, 3), seasonal_order=(1, 1, 1, 365)).fit()
 
-![](Figures/npr.png)
+![](Figures/acf.png)
 
 A drawback of using SARIMA here is as m=365, the runtime becomes very long!
 
