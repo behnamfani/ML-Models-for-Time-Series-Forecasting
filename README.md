@@ -51,3 +51,9 @@ E.g. using dataset created by the lags and scaled between -1 and 1, 3 models of 
 |	8.857143|	7.000000|	7.000000|	6.000000|	8.666667|	7.166667|
 |	14.000000|	8.857143|	7.000000|	7.000000|	6.000000|	8.666667|
 |   11.000000|	14.000000|	8.857143|	7.000000|	7.000000|	6.000000|
+
+![linearRegression][lr.png]
+
+![RandomForrest][rf.png]
+
+![XGBoost][xgb.png]
