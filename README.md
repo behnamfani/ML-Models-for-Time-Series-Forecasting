@@ -2,6 +2,14 @@
 
 Time series data is a sequence of data points indexed in time order and methods for predicting them are different than normal data. In this project, I try different feature engineering methods and different models to see their performances in forecasting the mean temperature of Dehli [kaggle](https://www.kaggle.com/datasets/sumanthvrao/daily-climate-time-series-data). For more description, figures, and other parts like Exploratory data analysis see the script.
 
+Plotting the meantemp:
+
+![](Figures/meantemp.png)
+
+![](Figures/boxplot.png)
+
+![](Figures/trend.png)
+
 Models:
 1. Linear Regression
 2. Random Forest
@@ -51,6 +59,8 @@ E.g. using dataset created by the lags and scaled between -1 and 1, 3 models of 
 |	8.857143|	7.000000|	7.000000|	6.000000|	8.666667|	7.166667|
 |	14.000000|	8.857143|	7.000000|	7.000000|	6.000000|	8.666667|
 |   11.000000|	14.000000|	8.857143|	7.000000|	7.000000|	6.000000|
+
+![](Figures/corr.png)
 
 linearRegression
 
