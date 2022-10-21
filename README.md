@@ -43,11 +43,11 @@ The third method is to use a rolling window. The main goal of building and using
       Testset['rolling_mean'], Testset['rolling_max'], Testset['rolling_min'] = rolling_mean, rolling_max, rolling_min
 ```
 
-E.g. using dataset created by the lags
+E.g. using dataset created by the lags and scaled between -1 and 1, 3 models of linearRegression, RandomForrest(Max_depth=5), and XGBoost(lr=0.05, Max_depth=3) are trained and used to predict. 
 |meantemp|	lag_1|	lag_2|	lag_3|	lag_4|	lag_5|
 |:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|
-0|	7.000000|	6.000000|	8.666667|	7.166667|	7.400000|	10.000000|
-1|	7.000000|	7.000000|	6.000000|	8.666667|	7.166667|	7.400000|
-2|	8.857143|	7.000000|	7.000000|	6.000000|	8.666667|	7.166667|
-3|	14.000000|	8.857143|	7.000000|	7.000000|	6.000000|	8.666667|
-4|	11.000000|	14.000000|	8.857143|	7.000000|	7.000000|	6.000000|
+|	7.000000|	6.000000|	8.666667|	7.166667|	7.400000|	10.000000|
+|	7.000000|	7.000000|	6.000000|	8.666667|	7.166667|	7.400000|
+|	8.857143|	7.000000|	7.000000|	6.000000|	8.666667|	7.166667|
+|	14.000000|	8.857143|	7.000000|	7.000000|	6.000000|	8.666667|
+|   11.000000|	14.000000|	8.857143|	7.000000|	7.000000|	6.000000|
