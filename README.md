@@ -10,14 +10,14 @@ Plotting the meantemp:
 
 ![](Figures/trend.png)
 
-Models:
+### Models:
 1. Linear Regression
 2. Random Forest
 3. XGBoost
 4. [Prophet](https://facebook.github.io/prophet/) and [NeuralProphet](https://github.com/ourownstory/neural_prophet)
 5. SARIMA
 
-Dataset:
+### Dataset:
 The dataset contains meantemp, humidity, wind_speed, meanpressure, and the dates. I use and predict the meantemp feature. For the first 3 models, I create 3 different dataframes with different features based on [medium](https://medium.com/data-science-at-microsoft/introduction-to-feature-engineering-for-time-series-forecasting-620aa55fcab0)
 
 The first method is to simply use different date attributes:
@@ -69,19 +69,19 @@ from sklearn.preprocessing import MinMaxScaler
 import xgboost as xgb
 ```
 
-LinearRegression()
+**LinearRegression()**
 
 ![](Figures/lr.png)
 
-RandomForestRegressor(max_depth=5)
+**RandomForestRegressor(max_depth=5)**
 
 ![](Figures/rf.png)
 
-xgb.XGBRegressor(objective='reg:squarederror', learning_rate=0.05, max_depth=3)
+**xgb.XGBRegressor(objective='reg:squarederror', learning_rate=0.05, max_depth=3)**
 
 ![](Figures/xgb.png)
 
-Result:
+### Result:
 
 |Model	|MAE_Train	|RMSE_Train	|MAE_Test	|RMSE_Test|
 |:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|
@@ -100,13 +100,13 @@ from neuralprophet import NeuralProphet
   df.rename(columns={"meantemp": "y"}, inplace=True)
   df['ds'] = pd.to_datetime(Train.index)
 ```  
-Prophet(weekly_seasonality=False, daily_seasonality=False)
+**Prophet(weekly_seasonality=False, daily_seasonality=False)**
 
 ![](Figures/pr.png)
 
 Prophet: MAE_Train: 1.58942956629 - RMSE_Train 2.019178940866984 - MAE_Test 2.229713724510572 - RMSE_Test 2.7251281785326342
 
-NeuralProphet(n_lags=lags, learning_rate=0.01, num_hidden_layers=1, seasonality_reg=0.2, weekly_seasonality=False, daily_seasonality=False)
+**NeuralProphet(n_lags=lags, learning_rate=0.01, num_hidden_layers=1, seasonality_reg=0.2, weekly_seasonality=False, daily_seasonality=False)**
 
 ![](Figures/npr.png)
 
