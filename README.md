@@ -114,13 +114,13 @@ NeuralProphet: MAE_Train: 1.1258757235502816 - RMSE_Train 1.502469718180313 - MA
 
 
 The Autoregressive Integrated Moving Average (ARMA(p, d, q)), model combines Autoregression (AR(p)) and Moving average (MA(q)) models with automatic differencing (d). Since meantemp is not stationary and by using one order of differencing, it becomes stationary, we can set d=1. Seasonality is important for forecasting if our data has one. Thus, seasonal autoregressive integrated moving-average (SARIMA(p, d, q)(P, D, Q)m) adds seasonal effects into the ARIMA model.  (P, D, Q) represent the seasonal orders and m is simply the number of observations per year. In this case, we have daily data, m=365. The ACF and PACF plots will help to have an estimate of these values. A helpful link for this purpose is https://arauto.readthedocs.io/en/latest/how_to_choose_terms.html. 
-'''python
+```python
 from statsmodels.tsa.statespace.sarimax import SARIMAX
-'''
-'''python
+```
+```python
   df = Train['meantemp']
   df.index = pd.DatetimeIndex(Train.index).to_period('D')
-'''
+```
 model = SARIMAX(Train['meantemp'], order=(1, 1, 3), seasonal_order=(1, 1, 1, 365)).fit()
 
 ![](Figures/acf.png)
