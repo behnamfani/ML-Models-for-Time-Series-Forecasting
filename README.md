@@ -111,3 +111,7 @@ Prophet: MAE_Train: 1.58942956629 - RMSE_Train 2.019178940866984 - MAE_Test 2.22
 ![](Figures/npr.png)
 
 NeuralProphet: MAE_Train: 1.1258757235502816 - RMSE_Train 1.502469718180313 - MAE_Test 1.4588360756955796 - RMSE_Test 1.8114394949674366
+
+
+The Autoregressive integrated Moving Average (ARMA(p, d, q)), model combines Autoregression (AR(p)) and Moving average (MA(q)) models with automatic differencing (d). Seasonality is important for forecasting if our data has one. Thus, seasonal autoregressive integrated moving-average (SARIMA(p, d, q)(P, D, Q)m) adds seasonal effects into the ARIMA model.  (P, D, Q) represent the seasonal orders and m is simply the number of observations per year. In this case that the we have daily data, m=365. The ACF and PACF plots will help to have an estimate of these values. A helpful link for this purpose is https://arauto.readthedocs.io/en/latest/how_to_choose_terms.html.
+
