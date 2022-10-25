@@ -81,14 +81,6 @@ import xgboost as xgb
 
 ![](Figures/xgb.png)
 
-### Result:
-
-|Model	|MAE_Train	|RMSE_Train	|MAE_Test	|RMSE_Test|
-|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|
-|Linear Regression |0.076048	|0.100125	|0.084995	|0.107578|
-|Random Forrest max_depth=5 |0.069703	|0.090522	|0.084989	|0.108715|
-|XGBoost lr=0.05 & max_depth=3 |	0.069496|	0.090210|	0.085071|	0.108815|
-
 
 For Prophet and NeuralProphet models, the dataframe must consist of two columns of y (target feature which is meantemp) and ds (date).
 ```python
@@ -104,13 +96,15 @@ from neuralprophet import NeuralProphet
 
 ![](Figures/pr.png)
 
-Prophet: MAE_Train: 1.58942956629 - RMSE_Train 2.019178940866984 - MAE_Test 2.229713724510572 - RMSE_Test 2.7251281785326342
 
 **NeuralProphet(n_lags=lags, learning_rate=0.01, num_hidden_layers=1, seasonality_reg=0.2, weekly_seasonality=False, daily_seasonality=False)**
 
 ![](Figures/npr.png)
 
-NeuralProphet: MAE_Train: 1.1258757235502816 - RMSE_Train 1.502469718180313 - MAE_Test 1.4588360756955796 - RMSE_Test 1.8114394949674366
+
+### Result:
+
+![](Figures/result.png)
 
 
 The Autoregressive Integrated Moving Average (ARMA(p, d, q)), model combines Autoregression (AR(p)) and Moving average (MA(q)) models with automatic differencing (d). Since meantemp is not stationary and by using one order of differencing, it becomes stationary, we can set d=1. Seasonality is important for forecasting if our data has one. Thus, seasonal autoregressive integrated moving-average (SARIMA(p, d, q)(P, D, Q)m) adds seasonal effects into the ARIMA model.  (P, D, Q) represent the seasonal orders and m is simply the number of observations per year. In this case, we have daily data, m=365. The ACF and PACF plots will help to have an estimate of these values. A helpful link for this purpose is https://arauto.readthedocs.io/en/latest/how_to_choose_terms.html. 
