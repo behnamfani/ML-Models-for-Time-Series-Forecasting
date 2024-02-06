@@ -4,17 +4,17 @@ Time series data is a sequence of data points indexed in time order and methods 
 
 Plotting the meantemp:
 
-![](Figures/meantemp.png)
+![](reports/figures/meantemp.png)
 
-![](Figures/boxplot.png)
+![](reports/figures/boxplot.png)
 
-![](Figures/trend.png)
+![](reports/figures/trend.png)
 
 ### Models:
 1. Linear Regression
 2. Random Forest
 3. XGBoost
-4. Prophet and NeuralProphet
+4. Prophet
 5. SARIMA
 
 ### Dataset:
@@ -32,7 +32,7 @@ The first method is to simply use different date attributes:
 
 The second method is to use lags. Lag features are values at prior timesteps that are considered useful because they are created on the assumption that what happened in the past can influence or contain a sort of intrinsic information about the future.
 ```python
-      # Add lags (The past values are known as lags) to the dataset. PACF plays an important role to get the right number of the lags
+      # Add lags (The past values are known as lags) to the dataset. PACF plays an important role in getting the right number of the lags
       for inc in range(1,6):
           field_name = 'lag_' + str(inc)
           Trainset[field_name] = Trainset['meantemp'].shift(inc)
@@ -71,21 +71,20 @@ import xgboost as xgb
 
 **LinearRegression()**
 
-![](Figures/lr.png)
+![](reports/figures/lr.png)
 
 **RandomForestRegressor(max_depth=5)**
 
-![](Figures/rf.png)
+![](reports/figures/rf.png)
 
 **xgb.XGBRegressor(objective='reg:squarederror', learning_rate=0.05, max_depth=3)**
 
-![](Figures/xgb.png)
+![](reports/figures/xgb.png)
 
 
 For Prophet and NeuralProphet models, the dataframe must consist of two columns of y (target feature which is meantemp) and ds (date).
 ```python
 from prophet import Prophet
-from neuralprophet import NeuralProphet
 ```
 ```python
   df = Train[["meantemp"]] 
@@ -94,17 +93,11 @@ from neuralprophet import NeuralProphet
 ```  
 **Prophet(weekly_seasonality=False, daily_seasonality=False)**
 
-![](Figures/pr.png)
-
-
-**NeuralProphet(n_lags=lags, learning_rate=0.01, num_hidden_layers=1, seasonality_reg=0.2, weekly_seasonality=False, daily_seasonality=False)**
-
-![](Figures/npr.png)
-
+![](reports/figures//pr.png)
 
 ### Result:
 
-![](Figures/result.png)
+![](reports/figures/result.png)
 
 
 The Autoregressive Integrated Moving Average (ARMA(p, d, q)), model combines Autoregression (AR(p)) and Moving average (MA(q)) models with automatic differencing (d). Since meantemp is not stationary and by using one order of differencing, it becomes stationary, we can set d=1. Seasonality is important for forecasting if our data has one. Thus, seasonal autoregressive integrated moving-average (SARIMA(p, d, q)(P, D, Q)m) adds seasonal effects into the ARIMA model.  (P, D, Q) represent the seasonal orders and m is simply the number of observations per year. In this case, we have daily data, m=365. The ACF and PACF plots will help to have an estimate of these values. A helpful link for this purpose is https://arauto.readthedocs.io/en/latest/how_to_choose_terms.html. 
@@ -117,7 +110,7 @@ from statsmodels.tsa.statespace.sarimax import SARIMAX
 ```
 **model = SARIMAX(df['meantemp'], order=(1, 1, 3), seasonal_order=(1, 1, 1, <# observations in a year>)).fit()**
 
-![](Figures/acf.png)
+![](reports/figures/acf.png)
 
 A drawback of using SARIMA here is as m=365, the runtime becomes very long!!
 
