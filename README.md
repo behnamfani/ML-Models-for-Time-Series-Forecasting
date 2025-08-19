@@ -27,46 +27,46 @@ Plotting the meantemp:
 
 ![](reports/figures/trend.png)
 
-### Models:
+---
+
+## Feature Engineering Methods
+
+Three feature engineering techniques were applied:
+
+### 1. Date Attributes
+Extracting temporal features from dates:
+```python
+Trainset['month'] = pd.to_datetime(Train.index).month
+Trainset['Week_n'] = pd.to_datetime(Train.index).isocalendar().week
+Trainset['Day'] = pd.to_datetime(Train.index).day
+```
+
+### 2. Lag Features
+Using past values (lags) to capture temporal dependencies:
+```python
+for inc in range(1, 6):
+    field_name = f'lag_{inc}'
+    Trainset[field_name] = Trainset['meantemp'].shift(inc)
+    Testset[field_name] = Testset['meantemp'].shift(inc)
+```
+
+### 3. Rolling Window Statistics
+Calculating rolling statistics (mean, max, min) over a 5-day window:
+```python
+rolling_mean = Trainset.rolling(window=5).mean()
+rolling_max = Trainset.rolling(window=5).max()
+rolling_min = Trainset.rolling(window=5).min()
+Trainset[['rolling_mean', 'rolling_max', 'rolling_min']] = rolling_mean, rolling_max, rolling_min
+```
+
+---
+
+## Models
 1. Linear Regression
 2. Random Forest
 3. XGBoost
 4. Prophet
 5. SARIMA
-
-### Dataset:
-The dataset contains meantemp, humidity, wind_speed, meanpressure, and the dates. I use and predict the meantemp feature. For the first 3 models, I create 3 different dataframes with different features based on [medium](https://medium.com/data-science-at-microsoft/introduction-to-feature-engineering-for-time-series-forecasting-620aa55fcab0)
-
-The first method is to simply use different date attributes:
-```python
-    Trainset['month'] = pd.to_datetime(Train.index).month
-    Trainset['Week_n'] = pd.to_datetime(Train.index).isocalendar().week
-    Trainset['Day'] = pd.to_datetime(Train.index).day
-    Testset['month'] = pd.to_datetime(Test.index).month
-    Testset['Week_n'] = pd.to_datetime(Test.index).isocalendar().week
-    Testset['Day'] = pd.to_datetime(Test.index).day
-```
-
-The second method is to use lags. Lag features are values at prior timesteps that are considered useful because they are created on the assumption that what happened in the past can influence or contain a sort of intrinsic information about the future.
-```python
-      # Add lags (The past values are known as lags) to the dataset. PACF plays an important role in getting the right number of the lags
-      for inc in range(1,6):
-          field_name = 'lag_' + str(inc)
-          Trainset[field_name] = Trainset['meantemp'].shift(inc)
-          Testset[field_name] = Testset['meantemp'].shift(inc)
-```
-
-The third method is to use a rolling window. The main goal of building and using rolling window statistics in a time series dataset is to compute statistics on the values from a given data sample by defining a range that includes the sample itself as well as some specified number of samples before and after the sample used.
-```python
-      rolling_mean = Trainset.rolling(window=5).mean()
-      rolling_max = Trainset.rolling(window=5).max()
-      rolling_min = Trainset.rolling(window=5).min()
-      Trainset['rolling_mean'], Trainset['rolling_max'], Trainset['rolling_min'] = rolling_mean, rolling_max, rolling_min
-      rolling_mean = Testset.rolling(window=5).mean()
-      rolling_max = Testset.rolling(window=5).max()
-      rolling_min = Testset.rolling(window=5).min()
-      Testset['rolling_mean'], Testset['rolling_max'], Testset['rolling_min'] = rolling_mean, rolling_max, rolling_min
-```
 
 E.g. using dataset created by the lags and scaled between -1 and 1, 3 models of linearRegression, RandomForrest, and XGBoost are trained and used to predict. 
 |meantemp|	lag_1|	lag_2|	lag_3|	lag_4|	lag_5|
@@ -77,7 +77,12 @@ E.g. using dataset created by the lags and scaled between -1 and 1, 3 models of 
 |	14.000000|	8.857143|	7.000000|	7.000000|	6.000000|	8.666667|
 |   11.000000|	14.000000|	8.857143|	7.000000|	7.000000|	6.000000|
 
-![](Figures/corr.png)
+### Feature Correlation
+![Correlation](reports/figures/corr.png)
+
+---
+
+## Model Implementation
 
 ```python
 from sklearn.linear_model import LinearRegression
@@ -112,11 +117,6 @@ from prophet import Prophet
 
 ![](reports/figures//pr.png)
 
-### Result:
-
-![](reports/figures/result.png)
-
-
 The Autoregressive Integrated Moving Average (ARMA(p, d, q)), model combines Autoregression (AR(p)) and Moving average (MA(q)) models with automatic differencing (d). Since meantemp is not stationary and by using one order of differencing, it becomes stationary, we can set d=1. Seasonality is important for forecasting if our data has one. Thus, seasonal autoregressive integrated moving-average (SARIMA(p, d, q)(P, D, Q)m) adds seasonal effects into the ARIMA model.  (P, D, Q) represent the seasonal orders and m is simply the number of observations per year. In this case, we have daily data, m=365. The ACF and PACF plots will help to have an estimate of these values. A helpful link for this purpose is https://arauto.readthedocs.io/en/latest/how_to_choose_terms.html. 
 ```python
 from statsmodels.tsa.statespace.sarimax import SARIMAX
@@ -129,5 +129,16 @@ from statsmodels.tsa.statespace.sarimax import SARIMAX
 
 ![](reports/figures/acf.png)
 
-A drawback of using SARIMA here is as m=365, the runtime becomes very long!!
+A drawback of using SARIMA here is as m=365, the runtime becomes very long!
+
+---
+
+## Result
+
+![](reports/figures/result.png)
+
+### Key Insights
+- **SARIMA** captures seasonality well but is computationally expensive due to daily data (`m=365`).
+- **Prophet** and **XGBoost** perform robustly with minimal tuning.
+- **Feature engineering** (lags, rolling stats) significantly impacts model performance.
 
