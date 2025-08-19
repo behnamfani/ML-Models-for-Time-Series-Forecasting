@@ -1,6 +1,23 @@
 # ML-Models-for-Time-Series-Forecasting
 
-Time series data is a sequence of data points indexed in time order and methods for predicting them are different than normal data. In this project, I try different feature engineering methods and different models to see their performances in forecasting the mean temperature of Dehli [kaggle](https://www.kaggle.com/datasets/sumanthvrao/daily-climate-time-series-data). For more description, figures, and other parts like Exploratory data analysis see the script. For more information regarding the models, you can read this [blog](https://neptune.ai/blog/select-model-for-time-series-prediction-task).
+Time series data is a sequence of data points indexed in time order and methods for predicting them are different than normal data. This project explores various feature engineering techniques and machine learning models to forecast the **mean temperature of Delhi** using a [Kaggle dataset](https://www.kaggle.com/datasets/sumanthvrao/daily-climate-time-series-data). The goal is to compare the performance of different models and feature engineering methods for time series forecasting.
+
+## Dataset Overview
+
+The dataset includes:
+- **meantemp** (target variable)
+- **humidity**
+- **wind_speed**
+- **meanpressure**
+- **date**
+
+The focus is on predicting **meantemp** using different feature engineering approaches.
+
+---
+
+## Exploratory Data Analysis (EDA)
+
+Visualizations of the dataset:
 
 Plotting the meantemp:
 
